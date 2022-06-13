@@ -28,7 +28,7 @@ ${OBJ_DIR}%.o : ${SRCS_DIR}%.c	${INCLUDES}
 all: ${NAME}
 
 ${NAME}:	Makefile ${OBJS}
-			${CC} ${FLAGS} ${LEAKS} ${OBJS} -o ${NAME}
+			${CC} ${FLAGS} ${OBJS} -o ${NAME}
 
 clean:
 			rm -f ${OBJS}
