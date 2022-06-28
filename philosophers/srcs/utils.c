@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 16:31:39 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/09 14:04:21 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/09 17:11:38 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,26 @@ int	ft_atoi(const char *nptr)
 
 int	ft_message(char *s, t_philo *philo, unsigned long long time)
 {
-	unsigned long long	timelost;
+	int					test;
 
 	time += 0;
+	pthread_mutex_lock(&philo->datas->protectstate);
+	if (philo->datas->state == 0)
+	{
+		pthread_mutex_unlock(&philo->datas->protectstate);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->datas->protectstate);
 	pthread_mutex_lock(&philo->datas->msgs);
-	timelost = ft_gettime();
-	printf("%llu %d %s\n", time / 1000, philo->nbr, s);
-	timelost = ft_gettime() - timelost;
-	philo->lastmeal = philo->lastmeal + timelost;
-	if (ft_strncmp(s, "died", 4) != 0)
-		pthread_mutex_unlock(&philo->datas->msgs);
+	if (philo->datas->message == 0)
+		test = 0;
+	else
+		test = 1;
+	if (ft_strncmp(s, "died", 4) == 0)
+		philo->datas->message = 0;
+	pthread_mutex_unlock(&philo->datas->msgs);
+	if (test != 0)
+		printf("%llu %d %s\n", time / 1000, philo->nbr, s);
 	return (0);
 }
 

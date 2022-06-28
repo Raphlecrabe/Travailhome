@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 13:06:58 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/08 16:22:52 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/09 16:15:45 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_data
 	int					time_eat;
 	int					time_sleep;
 	int					maxmeals;
+	int					message;
 	pthread_t			speaks;
 	pthread_mutex_t		msgs;
 	pthread_mutex_t		protectstate;

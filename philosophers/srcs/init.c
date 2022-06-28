@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:30:00 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/06 13:31:37 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/09 16:16:10 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ int	ft_init(t_data **datas, char **argv, int argc)
 		return (-1);
 	(*datas)->start = ft_gettime();
 	pthread_mutex_init(&(*datas)->msgs, NULL);
+	pthread_mutex_init(&(*datas)->protectstate, NULL);
+	(*datas)->state = 1;
+	(*datas)->message = 1;
 	while (i < (*datas)->amount)
 	{
 		(*datas)->philo[i].nbr = i + 1;
