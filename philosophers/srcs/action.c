@@ -49,6 +49,7 @@ int	ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->locklast);
 	philo->lastmeal = ft_gettime();
 	pthread_mutex_unlock(&philo->locklast);
+	time = ft_gettime();
 	ft_message("is eating", philo, ft_realtime(philo, philo->lastmeal));
 	ft_usleep(philo->datas->time_eat);
 	if (ft_protectstate(philo) == -1)
