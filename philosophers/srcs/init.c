@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:30:00 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/09 16:16:10 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/29 15:43:31 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,33 @@ unsigned long long	ft_gettime(void)
 	return (ms);
 }
 
-void	ft_init2(t_data *datas, char **argv, int argc)
+int	ft_init2(t_data **datas, char **argv, int argc)
 {
-	datas->state = 1;
-	datas->amount = ft_atoi(argv[1]);
-	datas->time_die = ft_atoi(argv[2]) * 1000;
-	datas->time_eat = ft_atoi(argv[3]) * 1000;
-	datas->time_sleep = ft_atoi(argv[4]) * 1000;
+	(*datas)->state = 1;
+	(*datas)->amount = ft_atoi(argv[1]);
+	(*datas)->time_die = ft_atoi(argv[2]) * 1000;
+	(*datas)->time_eat = ft_atoi(argv[3]) * 1000;
+	(*datas)->time_sleep = ft_atoi(argv[4]) * 1000;
 	if (argc == 6)
-		datas->maxmeals = ft_atoi(argv[5]);
+		(*datas)->maxmeals = ft_atoi(argv[5]);
 	else
-		datas->maxmeals = -1;
-	datas->current = 0;
+		(*datas)->maxmeals = -1;
+	(*datas)->current = 0;
+		(*datas)->philo = malloc(sizeof(t_philo) * ((*datas)->amount));
+	if ((*datas)->philo == NULL)
+		return (-1);
+	(*datas)->start = ft_gettime();
+	pthread_mutex_init(&(*datas)->msgs, NULL);
+	pthread_mutex_init(&(*datas)->protectstate, NULL);
+	(*datas)->state = 1;
+	(*datas)->message = 1;
+	if ((*datas)->amount <= 0 || (*datas)->time_die <= 0
+		|| (*datas)->time_eat <= 0 || (*datas)->time_sleep <= 0)
+	{
+		printf("Pls put a positive number in your arguments you dumb trash\n");
+		return (-1);
+	}
+	return (0);
 }
 
 int	ft_init(t_data **datas, char **argv, int argc)
@@ -44,15 +59,8 @@ int	ft_init(t_data **datas, char **argv, int argc)
 	*datas = malloc(sizeof(t_data));
 	if (*datas == NULL)
 		return (-1);
-	ft_init2(*datas, argv, argc);
-	(*datas)->philo = malloc(sizeof(t_philo) * ((*datas)->amount));
-	if ((*datas)->philo == NULL)
+	if (ft_init2(datas, argv, argc) == -1)
 		return (-1);
-	(*datas)->start = ft_gettime();
-	pthread_mutex_init(&(*datas)->msgs, NULL);
-	pthread_mutex_init(&(*datas)->protectstate, NULL);
-	(*datas)->state = 1;
-	(*datas)->message = 1;
 	while (i < (*datas)->amount)
 	{
 		(*datas)->philo[i].nbr = i + 1;

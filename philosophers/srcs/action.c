@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 12:12:52 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/09 17:06:38 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/29 11:55:47 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,16 @@ int	ft_eat(t_philo *philo)
 		return (-1);
 	if (ft_fork2(philo) == -1)
 		return (-1);
-	if (ft_protectstate(philo) == -1)
-		return (-1);
 	pthread_mutex_lock(&philo->locklast);
 	philo->lastmeal = ft_gettime();
 	pthread_mutex_unlock(&philo->locklast);
-	time = ft_gettime();
 	ft_message("is eating", philo, ft_realtime(philo, philo->lastmeal));
 	ft_usleep(philo->datas->time_eat);
-	if (ft_protectstate(philo) == -1)
-		return (-1);
-	if (ft_unlockfork(philo) == -1)
-		return (-1);
-	if (ft_protectstate(philo) == -1)
-		return (-1);
 	pthread_mutex_lock(&philo->lockmeal);
 	philo->nbrfeast += 1;
 	pthread_mutex_unlock(&philo->lockmeal);
+	if (ft_unlockfork(philo) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -70,12 +63,8 @@ int	ft_thinksleep(t_philo *philo)
 
 	time = ft_gettime();
 	ft_message("is sleeping", philo, ft_realtime(philo, time));
-	if (ft_protectstate(philo) == -1)
-		return (-1);
 	ft_usleep(philo->datas->time_sleep);
 	time = ft_gettime();
 	ft_message("is thinking", philo, ft_realtime(philo, time));
-	if (ft_protectstate(philo) == -1)
-		return (-1);
 	return (0);
 }

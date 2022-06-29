@@ -5,6 +5,7 @@ SRCS=	action.c \
 		main.c \
 		utils.c \
 		utilsaction.c \
+		test.c \
 
 OBJ_DIR = objs/
 
@@ -16,7 +17,7 @@ CC= gcc
 
 FLAGS= -Wall -Wextra -Werror -pthread
 
-LEAKS= -g3 -fsanitize=thread
+LEAKS= -g3 -fsanitize=address
 
 INC_DIR = incs
 
@@ -29,7 +30,7 @@ ${OBJ_DIR}%.o : ${SRCS_DIR}%.c	${INCLUDES}
 all: ${NAME}
 
 ${NAME}:	Makefile ${OBJS}
-			${CC} ${FLAGS} ${OBJS} -o ${NAME}
+			${CC} ${FLAGS} ${LEAKS} ${OBJS} -o ${NAME}
 
 clean:
 			rm -f ${OBJS}

@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 13:06:58 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/09 16:15:45 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/29 14:58:44 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,11 @@ int					ft_message(char *s, t_philo *philo,
 						unsigned long long time);
 int					ft_atoi(const char *nptr);
 void				ft_usleep(unsigned long long time);
-int 				ft_unlockfork(t_philo *philo);
-int 				ft_fork2(t_philo *philo);
-int 				ft_fork1(t_philo *philo);
+int					ft_unlockfork(t_philo *philo);
+int					ft_fork2(t_philo *philo);
+int					ft_fork1(t_philo *philo);
 int					ft_protectstate(t_philo *philo);
-
-
-int ft_printout(t_philo *philo);
+int					ft_printout(t_philo *philo);
+int					ft_test(t_data *datas);
 
 #endif

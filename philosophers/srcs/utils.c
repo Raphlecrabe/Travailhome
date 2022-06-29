@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 16:31:39 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/09 17:11:38 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/29 14:46:17 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,16 @@ int	ft_atoi(const char *nptr)
 
 int	ft_message(char *s, t_philo *philo, unsigned long long time)
 {
-	time += 0;
-	pthread_mutex_lock(&philo->datas->protectstate);
-	if (philo->datas->state == 0)
+	pthread_mutex_lock(&philo->lockmeal);
+	if (philo->datas->maxmeals != -1
+		&& philo->nbrfeast >= philo->datas->maxmeals)
 	{
-		pthread_mutex_unlock(&philo->datas->protectstate);
+		pthread_mutex_unlock(&philo->lockmeal);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->datas->protectstate);
+	pthread_mutex_unlock(&philo->lockmeal);
+	if (ft_protectstate(philo) == -1)
+		return (0);
 	pthread_mutex_lock(&philo->datas->msgs);
 	if (philo->datas->message == 0)
 	{
@@ -86,7 +88,7 @@ int	ft_message(char *s, t_philo *philo, unsigned long long time)
 		philo->datas->message = 0;
 		printf("%llu %d %s\n", time / 1000, philo->nbr, s);
 	}
-	if 	(philo->datas->message != 0)
+	if (philo->datas->message != 0)
 		printf("%llu %d %s\n", time / 1000, philo->nbr, s);
 	pthread_mutex_unlock(&philo->datas->msgs);
 	return (0);
