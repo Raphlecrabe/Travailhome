@@ -6,24 +6,11 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 13:06:30 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/09 14:06:39 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/06/09 17:08:19 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/philo.h"
-
-void	ft_setfree(t_data *datas)
-{
-	int	i;
-
-	i = 0;
-	while (i < datas->amount)
-	{
-		pthread_mutex_unlock(&datas->philo[i].lockfork);
-		i++;
-	}
-	pthread_mutex_unlock(&datas->philo[i].locklast);
-}
 
 int	ft_test(t_data *datas)
 {
@@ -44,27 +31,32 @@ int	ft_test(t_data *datas)
 		if (time - datas->philo[i].lastmeal
 			>= (unsigned long long) datas->time_die)
 		{
+			pthread_mutex_unlock(&datas->philo[i].locklast);
+			time = ft_gettime();
+			ft_message("died", &datas->philo[i],
+				ft_realtime(&datas->philo[i], time));
 			pthread_mutex_lock(&datas->protectstate);
 			datas->state = 0;
 			pthread_mutex_unlock(&datas->protectstate);
 			pthread_mutex_lock(&datas->philo[i].lockdead);
 			datas->philo[i].isdead = 1;
 			pthread_mutex_unlock(&datas->philo[i].lockdead);
-			ft_setfree(datas);
-			return (ft_message("died", &datas->philo[i],
-					ft_realtime(&datas->philo[i], time)));
+			return (0);
 		}
 		pthread_mutex_unlock(&datas->philo[i].locklast);
 		i++;
 		usleep(500);
 	}
-	pthread_mutex_lock(&datas->msgs);
 	if (datas->maxmeals != -1 && eat == 1)
 	{
+		pthread_mutex_lock(&datas->protectstate);
 		datas->state = 0;
+		pthread_mutex_unlock(&datas->protectstate);
+		pthread_mutex_lock(&datas->msgs);
+		datas->message = 0;
+		pthread_mutex_unlock(&datas->msgs);
 		return (0);
 	}
-	pthread_mutex_unlock(&datas->msgs);
 	return (1);
 }
 
@@ -74,7 +66,7 @@ void	*ft_routine(void *arg)
 
 	philo = arg;
 	if (philo->nbr % 2 == 0)
-		ft_usleep(philo->datas->time_eat - 10);
+		ft_usleep(philo->datas->time_eat);
 	while (1)
 	{
 		if (ft_isok(philo) == -1)
