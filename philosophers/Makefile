@@ -4,6 +4,7 @@ SRCS=	action.c \
 		init.c \
 		main.c \
 		utils.c \
+		utilsaction.c \
 
 OBJ_DIR = objs/
 
@@ -13,7 +14,7 @@ NAME= philo
 
 CC= gcc
 
-FLAGS= -Wall -Wextra -Werror
+FLAGS= -Wall -Wextra -Werror -pthread
 
 LEAKS= -g3 -fsanitize=thread
 
