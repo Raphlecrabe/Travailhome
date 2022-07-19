@@ -6,7 +6,7 @@
 /*   By: rmonacho <rmonacho@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 11:08:17 by rmonacho          #+#    #+#             */
-/*   Updated: 2022/06/29 14:46:49 by rmonacho         ###   ########lyon.fr   */
+/*   Updated: 2022/07/19 11:54:44 by rmonacho         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_fork2(t_philo *philo)
 		return (-1);
 	if (philo->nbr == 1)
 	{
-		while (checkfork == 0)
+		while (checkfork == 0 && !philo->isdead)
 		{
 			usleep(500);
 			pthread_mutex_lock(
